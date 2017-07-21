@@ -1,4 +1,8 @@
 # -*- coding: UTF-8 -*-
+from extract_changed import extract_train
+from extract_changed import head_and_tails
+from helper import read_data
+
 def read_data(file_path):
 	with open(file_path) as f:
 		lines = f.read().splitlines()
