@@ -47,7 +47,8 @@ def head_and_tails(word):
     tail2 = ['AL','ACY','AGE','ER','OR','FUL','ISM','IST','IVE','IZE','LESS','ISE','LY','NESS','SHIP','ING','ABLE','RY','TY']
     tail3 = ['ADA','ETTE','EE','ESE','QUE','AAR','EER','ZEE','ROO']
     tail4 = ['IC','ION','ANA','ESCENT','i','ICS','SIS']
-    result = [0,0,0,0,0]  #result array
+    tail5 = ['ABLE','IBLE','ARY','ERY','ORY']
+    result = [0,0,0,0,0,0]  #result array
     for x in head:
         if len(x) <= len(word):
             if word[:len(x)] == x:
@@ -68,52 +69,21 @@ def head_and_tails(word):
         if len(x) <= len(word):
             if word[-len(x):] == x:
                 result[4] = 1
-
+    for x in tail5:
+        if len(x) <= len(word):
+            if word[-len(x):] == x:
+                result[5] = 1
     return result
 
 if __name__ == "__main__":
     print("start!")
     data_lines = read_data("training_data.txt")
-
-    feature_list = []
-    target_list = []
     
-    with open("target_result.txt", 'w') as fout1:
-        with open("fearure_result.txt", 'w') as fout2:
-            i = 0
-            for data in data_lines:
-                target, feature = extract_train(data)
-                fout1.write(str(target)+'\n')
-                fout2.write(str(feature)+'\n')
-                target_list.append(target)
-                feature_list.append(feature)
+    with open("data_frame.txt", 'w') as fout1:
+        for data in data_lines:
+            target, feature = extract_train(data)
+            fout1.write(str(target['pri_stress_position'])+'\t'+str(feature['vol_number'])+'\t'+str(feature['head'])+'\t'+str(feature['tail1'])+'\t'+str(feature['tail2'])+'\t'+str(feature['tail3'])+'\t'+str(feature['tail4'])+'\t'+str(feature['tail5'])+'\n')
+            # pri_stress_position	vol_number	head	tail1	tail2	tail3	tail4
 
-                # i += 1
-                # if i == 10:
-                #     break
-    
-    from sklearn.feature_extraction import DictVectorizer
-    vec = DictVectorizer()
-    vec1 = DictVectorizer()
-    feature_array = vec.fit_transform(feature_list).toarray()
-    target_array = vec1.fit_transform(target_list).toarray()
-
-    test = False
-    if test == True:
-        # 使数据在0-1之间,但是跑出来数据都为0
-        from sklearn import preprocessing
-        normalized_feature = preprocessing.normalize(feature_array)
-        normalized_target = preprocessing.normalize(target_array)
-    else:
-        normalized_feature = feature_array
-        normalized_target = target_array
-    
-    from sklearn import metrics
-    from sklearn.ensemble import ExtraTreesClassifier
-    model = ExtraTreesClassifier()
-    model.fit(normalized_feature, normalized_target)
-    # display the relative importance of each attribute
-    print(vec.get_feature_names())
-    print(model.feature_importances_)
 
     print('Done!')

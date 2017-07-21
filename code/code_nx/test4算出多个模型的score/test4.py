@@ -1,8 +1,4 @@
 # -*- coding: UTF-8 -*-
-from extract_changed import extract_train
-from extract_changed import head_and_tails
-from helper import read_data
-
 def read_data(file_path):
 	with open(file_path) as f:
 		lines = f.read().splitlines()
@@ -51,7 +47,8 @@ def head_and_tails(word):
     tail2 = ['AL','ACY','AGE','ER','OR','FUL','ISM','IST','IVE','IZE','LESS','ISE','LY','NESS','SHIP','ING','ABLE','RY','TY']
     tail3 = ['ADA','ETTE','EE','ESE','QUE','AAR','EER','ZEE','ROO']
     tail4 = ['IC','ION','ANA','ESCENT','i','ICS','SIS']
-    result = [0,0,0,0,0]  #result array
+    tail5 = ['ABLE','IBLE','ARY','ERY','ORY']
+    result = [0,0,0,0,0,0]  #result array
     for x in head:
         if len(x) <= len(word):
             if word[:len(x)] == x:
@@ -72,7 +69,10 @@ def head_and_tails(word):
         if len(x) <= len(word):
             if word[-len(x):] == x:
                 result[4] = 1
-
+    for x in tail5:
+        if len(x) <= len(word):
+            if word[-len(x):] == x:
+                result[5] = 1
     return result
 
 if __name__ == "__main__":
@@ -116,57 +116,67 @@ if __name__ == "__main__":
         normalized_feature = feature_array
         normalized_target = target_array
     
+    print('----ExtraTreesClassifier-----')    
+    
     from sklearn import metrics
     from sklearn.ensemble import ExtraTreesClassifier
     model = ExtraTreesClassifier()
     model.fit(normalized_feature, normalized_target)
-    expected = normalized_target
-    predicted = model.predict(normalized_feature)
-    print(metrics.classification_report(expected, predicted))
-    print(metrics.confusion_matrix(expected, predicted))
+    print(model.score(normalized_feature, normalized_target))
     # display the relative importance of each attribute
-    print(vec.get_feature_names())
-    print(model.feature_importances_)
-    print('---------')
+    # print(vec.get_feature_names())
+    # print(model.feature_importances_)
+    print('----GaussianNB-----')
 
     from sklearn.naive_bayes import GaussianNB
     model = GaussianNB()
     model.fit(normalized_feature, normalized_target)
-    expected = normalized_target
-    predicted = model.predict(normalized_feature)
-    print(metrics.classification_report(expected, predicted))
-    print(metrics.confusion_matrix(expected, predicted))
+    print(model.score(normalized_feature, normalized_target))
     # print(vec.get_feature_names())
     # # print(model.feature_importances_)
-    print("-----------")
+    print("-----KNeighborsClassifier------")
 
     from sklearn.neighbors import KNeighborsClassifier
     model = KNeighborsClassifier()
     model.fit(normalized_feature, normalized_target)
-    expected = normalized_target
-    predicted = model.predict(normalized_feature)
-    print(metrics.classification_report(expected, predicted))
-    print(metrics.confusion_matrix(expected, predicted))
-    print('------------')
+    print(model.score(normalized_feature, normalized_target))
+    print('------DecisionTreeClassifier------')
 
     from sklearn.tree import DecisionTreeClassifier
     model = DecisionTreeClassifier()
     model.fit(normalized_feature, normalized_target)
-    expected = normalized_target
-    predicted = model.predict(normalized_feature)
-    print(metrics.classification_report(expected, predicted))
-    print(metrics.confusion_matrix(expected, predicted))
-    print('------------')
+    print(model.score(normalized_feature, normalized_target))
+    print('------MultinomialNB alpha=0.01------')
+
+    from sklearn.naive_bayes import MultinomialNB
+    model = MultinomialNB(alpha=0.01)
+    model.fit(normalized_feature, normalized_target)
+    print(model.score(normalized_feature, normalized_target))
+    print('------MultinomialNB alpha=1------')
+
+    model = MultinomialNB(alpha=1)
+    model.fit(normalized_feature, normalized_target)
+    print(model.score(normalized_feature, normalized_target))
+    print('------BernoulliNB-----')
+
+    from sklearn.naive_bayes import BernoulliNB
+    model = BernoulliNB()
+    model.fit(normalized_feature, normalized_target)
+    print(model.score(normalized_feature, normalized_target))    
+    print('-----LogisticRegression-------')
+
+    from sklearn.linear_model import LogisticRegression
+    model = LogisticRegression()
+    model.fit(normalized_feature, normalized_target)
+    print(model.score(normalized_feature, normalized_target))
+    print('-----SVC-------')
+
 
     from sklearn.svm import SVC
     # fit a SVM model to the data
     model = SVC()
     model.fit(normalized_feature, normalized_target)
-    expected = normalized_target
-    predicted = model.predict(normalized_feature)
-    print(metrics.classification_report(expected, predicted))
-    print(metrics.confusion_matrix(expected, predicted))
+    print(model.score(normalized_feature, normalized_target))
     print('------------')
-
 
     print('Done!')
