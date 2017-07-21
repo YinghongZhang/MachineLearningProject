@@ -25,14 +25,13 @@ def extract_train(strs):
     for x in range(len(word_list[0])):
         if word_list[0][x] == ':':
             head_tails = head_and_tails(word_list[0][:x])
-    
+  
 
-    feature['head'] = head_tails[0]
-    feature['tail1'] = head_tails[1]
-    feature['tail2'] = head_tails[2]
-    feature['tail3'] = head_tails[3]
-    feature['tail4'] = head_tails[4]
-
+    for i in range(6):
+        if head_tails[i]==1:
+            feature['ht'+str(i)]=True
+        else:
+            feature['ht'+str(i)]=False
 
     return (feature, pri_stress_position)
 
@@ -50,22 +49,25 @@ def extract_test(strs):
 
 
     feature = {'vol_number':vol_number}
-    feature['head'] = head_tails[0]
-    feature['tail1'] = head_tails[1]
-    feature['tail2'] = head_tails[2]
-    feature['tail3'] = head_tails[3]
-    feature['tail4'] = head_tails[4]
+
+    for i in range(6):
+        if head_tails[i]==1:
+            feature['ht'+str(i)]=True
+        else:
+            feature['ht'+str(i)]=False
+
     return feature
 
 #function below returns a array that contain infomation about prefix and postfix of word
 def head_and_tails(word):
     head = ['A','AB','AC','AD','AL','BE','CON','DE','DIS','IM','IN','EM','EN','FOR','PRE',
     'PRO','TO','TRANS','MIS','RE','TANS','UN']
-    tail1 = ['AIM','AIN','CUR','DUCE','ERE','FIRM'.'GN','OIN','OKE','OSE','PT','RCE','SELF','UME']
+    tail1 = ['AIM','AIN','CUR','DUCE','ERE','FIRM','GN','OIN','OKE','OSE','PT','RCE','SELF','UME']
     tail2 = ['AL','ACY','AGE','ER','OR','FUL','ISM','IST','IVE','IZE','LESS','ISE','LY','NESS','SHIP','ING','ABLE','RY','TY']
     tail3 = ['ADA','ETTE','EE','ESE','QUE','AAR','EER','ZEE','ROO']
     tail4 = ['IC','ION','ANA','ESCENT','i','ICS','SIS']
-    result = [0,0,0,0,0]  #result array
+    tail5 = ['ABLE','IBLE','ARY','ERY','ORY']
+    result = [0,0,0,0,0,0]  #result array
     for x in head:
         if len(x) <= len(word):
             if word[:len(x)] == x:
@@ -86,4 +88,8 @@ def head_and_tails(word):
         if len(x) <= len(word):
             if word[-len(x):] == x:
                 result[4] = 1
+    for x in tail5:
+        if len(x) <= len(word):
+            if word[-len(x):] == x:
+                result[5] = 1
     return result

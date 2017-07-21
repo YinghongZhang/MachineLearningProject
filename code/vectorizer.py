@@ -1,7 +1,7 @@
 from sklearn.preprocessing import LabelEncoder
 from sklearn.feature_extraction import DictVectorizer
 
-def depart(original_tuple_array):
+def departit(original_tuple_array):
     x,y = zip(*original_tuple_array)
     return list(x),list(y)
 
