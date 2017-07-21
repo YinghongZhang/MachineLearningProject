@@ -11,7 +11,7 @@ def get(training_data):
     feature = vectorizer.vectorize(feature)
     #label = vectorizer.label(label)
     label = np.array(label)
-    return feature,label
+    return feature.toarray(),label
 
 
 def cut_train_file(training_data,start,end):   #cut off part of training_data
