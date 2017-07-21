@@ -7,26 +7,24 @@ from prepocess import result
 
 def get_predicted_lists():
 
-    data_lines = read_data("training_data.txt")
-    feature_list = []
-    target_list = []
-    
-    for data in data_lines:
-        target, feature = extract_train(data)
-        target_list.append(target)
-        feature_list.append(feature)
-    
-    from sklearn.feature_extraction import DictVectorizer
-    vec = DictVectorizer()
-    vec1 = DictVectorizer()
-    feature_array = vec.fit_transform(feature_list).toarray()
-    target_array = vec1.fit_transform(target_list).toarray()
+    data = read_data("training_data.txt")
+    feature_array, target_array = get(data)
 
+    # feature_list = []
+    # target_list = []
     
+    # for data in data_lines:
+    #     target, feature = extract_train(data)
+    #     target_list.append(target)
+    #     feature_list.append(feature)
+    
+    # from sklearn.feature_extraction import DictVectorizer
+    # vec = DictVectorizer()
+    # vec1 = DictVectorizer()
+    # feature_array = vec.fit_transform(feature_list).toarray()
+    # target_array = vec1.fit_transform(target_list).toarray()    
+    #
 
-    # feature_array, target_array = get(data)
-    # print(type(feature_array))
-    # print(type(target_array))
     test = True # 决定是否要把数据归一化
     if test == False:
         # 归一化使数据在0-1之间,但是跑出来数据都为0
@@ -38,63 +36,69 @@ def get_predicted_lists():
         normalized_target = target_array
     
     all_lists = []
-    print('-------------------------')
-    print(type(normalized_feature))
-    print(type(normalized_target))
-    print('-------------------------')
-
+# 1
+    print("--1--")
     from sklearn.tree import DecisionTreeClassifier
     model = DecisionTreeClassifier()
     model.fit(normalized_feature, normalized_target)
     DecisionTreeClassifierpredicted = list(model.predict(normalized_feature))
     all_lists.append(DecisionTreeClassifierpredicted)
-    
+ # 2  
+    print("--2--")
     from sklearn.ensemble import ExtraTreesClassifier
     model = ExtraTreesClassifier()
     model.fit(normalized_feature, normalized_target)
     ExtraTreesClassifierpredicted = list(model.predict(normalized_feature))
     all_lists.append(ExtraTreesClassifierpredicted)
-
+# 3
+    print("--3--")
     from sklearn.naive_bayes import GaussianNB
     model = GaussianNB()
     model.fit(normalized_feature, normalized_target)
     GaussianNBpredicted = list(model.predict(normalized_feature))
     all_lists.append(GaussianNBpredicted)
-
-    from sklearn.neighbors import KNeighborsClassifier
-    model = KNeighborsClassifier()
-    model.fit(normalized_feature, normalized_target)
-    KNeighborsClassifierpredicted = list(model.predict(normalized_feature))
-    all_lists.append(KNeighborsClassifierpredicted)
-
-    from sklearn.tree import DecisionTreeClassifier
-    model = DecisionTreeClassifier()
-    model.fit(normalized_feature, normalized_target)
-    DecisionTreeClassifierpredicted = list(model.predict(normalized_feature))
-    all_lists.append(DecisionTreeClassifierpredicted)
-
-    from sklearn.linear_model import LogisticRegression
-    model = LogisticRegression()
-    model.fit(normalized_feature, normalized_target)
-    LogisticRegressionpredicted = list(model.predict(normalized_feature))
-    all_lists.append(LogisticRegressionpredicted)
-
-    from sklearn.svm import SVC
-    model = SVC()
-    model.fit(normalized_feature, normalized_target)
-    SVCpredicted = list(model.predict(normalized_feature))
-    all_lists.append(SVCpredicted)
+# 4
+#     print("--4--")
+#     from sklearn.neighbors import KNeighborsClassifier
+#     model = KNeighborsClassifier()
+#     model.fit(normalized_feature, normalized_target)
+#     KNeighborsClassifierpredicted = list(model.predict(normalized_feature))
+#     all_lists.append(KNeighborsClassifierpredicted)
+# # 5
+#     print("--5--")
+#     from sklearn.tree import DecisionTreeClassifier
+#     model = DecisionTreeClassifier()
+#     model.fit(normalized_feature, normalized_target)
+#     DecisionTreeClassifierpredicted = list(model.predict(normalized_feature))
+#     all_lists.append(DecisionTreeClassifierpredicted)
+# # 6
+#     print("--6--")
+#     from sklearn.linear_model import LogisticRegression
+#     model = LogisticRegression()
+#     model.fit(normalized_feature, normalized_target)
+#     LogisticRegressionpredicted = list(model.predict(normalized_feature))
+#     all_lists.append(LogisticRegressionpredicted)
+# # 7 
+#     print("--7--")
+#     from sklearn.svm import SVC
+#     model = SVC()
+#     model.fit(normalized_feature, normalized_target)
+#     SVCpredicted = list(model.predict(normalized_feature))
+#     all_lists.append(SVCpredicted)
     
     return all_lists
 
 # for test:
 if __name__ == '__main__':
+    print('start')
+    predicted = result(get_predicted_lists())
+
+
+    print('half done')
     from sklearn.naive_bayes import BernoulliNB
     model = BernoulliNB()
     data = read_data("training_data.txt")
     feature_array, target_array = get(data)
-    get_predicted_lists()
-    print('?')
-    predicted = result(get_predicted_lists())
-    print(type(predicted))
-    print(model.score(normalized_feature, target_array))
+    print(model.score(predicted, target_array))
+    
+    print('Done!')
