@@ -18,7 +18,12 @@ def extract_train(strs):
         else:
             cons_list.append(x)
     feature = {'vol_number':vol_count-1}
-
+    #feature={}
+    for x in range(5):
+        if x < len(vol_list):
+            feature['pos'+str(x)] = vol_list[x]
+        else:
+            feature['pos'+str(x)] = False
 
     # add something
     head_tails = []
@@ -38,9 +43,12 @@ def extract_train(strs):
 def extract_test(strs):
     word_list = strs.split(' ')
     allvol = ['AA', 'AE', 'AH', 'AO', 'AW', 'AY', 'EH', 'ER', 'EY', 'IH', 'IY', 'OW', 'OY', 'UH', 'UW']
-    vol_number = len(list(map(allvol.count,word_list)))-list(map(allvol.count,word_list)).count(0)
-
-
+    
+    vol_list=[]
+    for x in word_list:
+        if allvol.count(x) > 0:
+            vol_list.append(x)
+    vol_number = len(vol_list)
 
     head_tails = []
     for x in range(len(word_list[0])):
@@ -49,6 +57,11 @@ def extract_test(strs):
 
 
     feature = {'vol_number':vol_number}
+    for x in range(5):
+        if x < len(vol_list):
+            feature['pos'+str(x)] = vol_list[x]
+        else:
+            feature['pos'+str(x)] = False
 
     for i in range(6):
         if head_tails[i]==1:
