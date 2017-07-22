@@ -1,12 +1,12 @@
-from . import extract_modified
-from . import helper
-from . import vectorizer
+import extract_changed
+import helper
+import vectorizer
 import numpy as np
 def readplz():
     return helper.read_data('./asset/training_data.txt')
 
 def get(training_data):
-    mid = list(map(extract_modified.extract_train,training_data))
+    mid = list(map(extract_changed.extract_train,training_data))
     feature,label = vectorizer.departit(mid)
     feature = vectorizer.vectorize(feature)
     #label = vectorizer.label(label)
@@ -28,8 +28,8 @@ def result(arr):
     arr = comb_result(arr,len(arr))
     r = []
     for x in arr:
-        r.append(vote(int(x)))
-    return r
+        r.append(vote(x))
+    return r   
 
 #input an array ,feedback the highest freq one
 def vote(arr):
