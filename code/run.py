@@ -6,6 +6,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 import time
 from sklearn.metrics import f1_score
@@ -14,7 +15,7 @@ start = time.clock()
 data = preprocess.readplz()
 x,y=preprocess.get(data)
 #kf = KFold(n_splits=10)
-m = LogisticRegression()
+m = RandomForestClassifier()
 m = m.fit(x,y)
 predict_y = m.predict(x)
 # print(m.score(x,y))
