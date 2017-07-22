@@ -1,7 +1,7 @@
 def extract_train(strs):
     word_list = strs.split(' ')
-    vol_list=[]       #in case you wanna use it,not sure it's useful or not  
-    cons_list=[]      #in case you wanna use it,not sure it's useful or not 
+    vol_list=[]       #in case you wanna use it,not sure it's useful or not
+    cons_list=[]      #in case you wanna use it,not sure it's useful or not
     vol_count = 1
     pri_stress_position = 0
     for x in word_list:
@@ -30,7 +30,7 @@ def extract_train(strs):
     for x in range(len(word_list[0])):
         if word_list[0][x] == ':':
             head_tails = head_and_tails(word_list[0][:x])
-  
+
 
     for i in range(6):
         if head_tails[i]==1:
@@ -43,7 +43,7 @@ def extract_train(strs):
 def extract_test(strs):
     word_list = strs.split(' ')
     allvol = ['AA', 'AE', 'AH', 'AO', 'AW', 'AY', 'EH', 'ER', 'EY', 'IH', 'IY', 'OW', 'OY', 'UH', 'UW']
-    
+
     vol_list=[]
     for x in word_list:
         if allvol.count(x) > 0:
