@@ -8,6 +8,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 import time
+from sklearn.metrics import f1_score
 
 start = time.clock()
 data = preprocess.readplz()
@@ -15,7 +16,10 @@ x,y=preprocess.get(data)
 #kf = KFold(n_splits=10)
 m = LogisticRegression()
 m = m.fit(x,y)
-print(m.score(x,y))
+# print(m.score(x,y))
+print('f1-score:')
+print(f1_score(x,y))
+
 elapsed = (time.clock() - start)
 print("Time used:", elapsed)
 
