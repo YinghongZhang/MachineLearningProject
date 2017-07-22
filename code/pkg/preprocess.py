@@ -1,4 +1,4 @@
-from . import extract_modified
+from . import extract_changed
 from . import helper
 from . import vectorizer
 import numpy as np
@@ -6,7 +6,7 @@ def readplz():
     return helper.read_data('./asset/training_data.txt')
 
 def get(training_data):
-    mid = list(map(extract_modified.extract_train,training_data))
+    mid = list(map(extract_changed.extract_train,training_data))
     feature,label = vectorizer.departit(mid)
     feature = vectorizer.vectorize(feature)
     #label = vectorizer.label(label)
@@ -42,7 +42,7 @@ def vote(arr):
         if v[x] >big_val:
             big_val = v[x]
             big = x
-    
+
     return big
 
 #transform

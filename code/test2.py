@@ -10,12 +10,12 @@ if __name__ == "__main__":
 
     feature_list = []
     target_list = []
-    
+
     for data in data_lines:
         target, feature = extract_train(data)
         target_list.append(target)
         feature_list.append(feature)
-    
+
     from sklearn.feature_extraction import DictVectorizer
     vec = DictVectorizer()
     vec1 = DictVectorizer()
@@ -31,9 +31,20 @@ if __name__ == "__main__":
     else:
         normalized_feature = feature_array
         normalized_target = target_array
-    
+
+    from sklearn.liner_model import LogisticRegression
+    print('LogisticRegression')
+    model = LogisticRegression()
+    model.fit(normalized_feature, normalized_target)
+    expected = normalized_target
+    predicted = model.predicted(normalized_feature)
+    print(metrics.classification_report(expected, predicted))
+    print(metrics.confusion_matrix(expected, predicted))
+    print('------------')
+
     from sklearn import metrics
     from sklearn.ensemble import ExtraTreesClassifier
+    print("ExtraTreesClassifier")
     model = ExtraTreesClassifier()
     model.fit(normalized_feature, normalized_target)
     expected = normalized_target
@@ -46,6 +57,7 @@ if __name__ == "__main__":
     print('---------')
 
     from sklearn.naive_bayes import GaussianNB
+    print('GaussianNB')
     model = GaussianNB()
     model.fit(normalized_feature, normalized_target)
     expected = normalized_target
@@ -57,6 +69,7 @@ if __name__ == "__main__":
     print("-----------")
 
     from sklearn.neighbors import KNeighborsClassifier
+    print('KNN')
     model = KNeighborsClassifier()
     model.fit(normalized_feature, normalized_target)
     expected = normalized_target
@@ -66,6 +79,7 @@ if __name__ == "__main__":
     print('------------')
 
     from sklearn.tree import DecisionTreeClassifier
+    print('DecisionTree')
     model = DecisionTreeClassifier()
     model.fit(normalized_feature, normalized_target)
     expected = normalized_target
@@ -75,6 +89,7 @@ if __name__ == "__main__":
     print('------------')
 
     from sklearn.svm import SVC
+    print('SVC')
     # fit a SVM model to the data
     model = SVC()
     model.fit(normalized_feature, normalized_target)
@@ -83,6 +98,5 @@ if __name__ == "__main__":
     print(metrics.classification_report(expected, predicted))
     print(metrics.confusion_matrix(expected, predicted))
     print('------------')
-
 
     print('Done!')
