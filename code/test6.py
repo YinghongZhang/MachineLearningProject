@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
-from extract_modified import extract_train
-from extract_modified import head_and_tails
-from helper import read_data
-from prepocess import get
-from prepocess import result
+from pkg.extract_modified import extract_train
+from pkg.extract_modified import head_and_tails
+from pkg.helper import read_data
+from pkg.preprocess import get
+from pkg.preprocess import result
 
 def get_predicted_lists():
 

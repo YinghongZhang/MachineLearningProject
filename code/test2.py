@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
-from extract_modified import extract_train
-from extract_modified import head_and_tails
-from helper import read_data
+from pkg.extract_modified import extract_train
+from pkg.extract_modified import head_and_tails
+from pkg.helper import read_data
 
 
 if __name__ == "__main__":

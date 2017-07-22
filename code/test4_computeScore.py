@@ -1,4 +1,6 @@
 # -*- coding: UTF-8 -*-
+from pkg import helper
+from pkg import extract_changed
 def read_data(file_path):
 	with open(file_path) as f:
 		lines = f.read().splitlines()
@@ -27,7 +29,7 @@ def extract_train(strs):
             cons_list.append(x)
     feature = {'vol_number':vol_count-1}                    # 元音数量
     target = {'pri_stress_position':pri_stress_position}    # 重音位置
-    
+
     head_tails = []
     x = word_list[0].find(':')              # 找到:的位置
     head_tails = head_and_tails(word_list[0][:x])   #提取出单词并检查前后缀
@@ -81,7 +83,7 @@ if __name__ == "__main__":
 
     feature_list = []
     target_list = []
-    
+
     for data in data_lines:
         target, feature = extract_train(data)
         target_list.append(target)
@@ -99,7 +101,7 @@ if __name__ == "__main__":
                 # i += 1
                 # if i == 10:
                 #     break
-    
+
     from sklearn.feature_extraction import DictVectorizer
     vec = DictVectorizer()
     vec1 = DictVectorizer()
@@ -115,9 +117,9 @@ if __name__ == "__main__":
     else:
         normalized_feature = feature_array
         normalized_target = target_array
-    
-    print('----ExtraTreesClassifier-----')    
-    
+
+    print('----ExtraTreesClassifier-----')
+
     from sklearn import metrics
     from sklearn.ensemble import ExtraTreesClassifier
     model = ExtraTreesClassifier()
