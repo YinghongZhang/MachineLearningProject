@@ -7,27 +7,33 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
+import time
 
+start = time.clock()
 data = preprocess.readplz()
 x,y=preprocess.get(data)
 #kf = KFold(n_splits=10)
 m = LogisticRegression()
 m = m.fit(x,y)
 print(m.score(x,y))
+elapsed = (time.clock() - start)
+print("Time used:", elapsed)
 
-#·····memory exploded·····
-#avg_train_score=0
-#avg_test_score=0
-#for train,test in kf.split(x):
-    #x_train,x_test,y_train,y_test = x[train],x[test],y[train],y[test]
-    #model = MultinomialNB()
-    #test = model.fit(x_train,y_train)
-    #avg_train_score+=test.score(x_train,y_train)
-    #avg_test_score+=test.score(x_test,y_test)
-    #print(test.score(x_train,y_train))
-    #print(test.score(x_test,y_test))
-    #print('----------')
-#print(avg_train_score/10)
-#print(avg_test_score/10)
+'''
+·····memory exploded·····
+avg_train_score=0
+avg_test_score=0
+for train,test in kf.split(x):
+    x_train,x_test,y_train,y_test = x[train],x[test],y[train],y[test]
+    model = MultinomialNB()
+    test = model.fit(x_train,y_train)
+    avg_train_score+=test.score(x_train,y_train)
+    avg_test_score+=test.score(x_test,y_test)
+    print(test.score(x_train,y_train))
+    print(test.score(x_test,y_test))
+    print('----------')
+print(avg_train_score/10)
+print(avg_test_score/10)
+'''
 
 

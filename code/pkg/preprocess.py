@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 from . import extract_changed
 from . import helper
 from . import vectorizer
-=======
-import extract_changed
-import helper
-import vectorizer
->>>>>>> 019a6305e182f8e4c57da37fb0620a77e057ae43
 import numpy as np
 def readplz():
     return helper.read_data('./asset/training_data.txt')
