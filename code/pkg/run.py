@@ -1,4 +1,4 @@
-import prepocess
+import preprocess as prepocess
 import vectorizer
 import extract_changed
 from sklearn.model_selection import KFold
