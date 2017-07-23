@@ -27,9 +27,8 @@ def extract_train(strs):
 
     # add something
     head_tails = []
-    for x in range(len(word_list[0])):
-        if word_list[0][x] == ':':
-            head_tails = head_and_tails(word_list[0][:x])
+    x = word_list[0].find(':')              # find the position of ':' 
+    head_tails = head_and_tails(word_list[0][:x])
 
 
     for i in range(6):
