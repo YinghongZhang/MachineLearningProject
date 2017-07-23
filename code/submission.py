@@ -140,16 +140,25 @@ def train(data, classifier_file):
     x,y = get(data)
     model = RandomForestClassifier()
     model.fit(x,y)
-    f = open(classifier_file)
+    f = open(classifier_file, 'wb')
     pickle.dump(model,f)
     f.close()
     
 def test(data, classifier_file):
     feature = list(map(extract_test,data))
     feature = vectorize(feature).toarray()
-    f = open(classifier_file)
+    f = open(classifier_file, 'rb')
     classifier = pickle.load(f)
     y = classifier.predict(feature)
     f.close()
     predict_y = list(map(int,y))
     return predict_y
+
+if __name__ == '__main__':
+    print('train..')
+    train("training_data.txt", 'classifier_file')
+    print('test..')
+    return_value = test("training_data.txt", 'classifier_file')
+    print(return_value)
+    print(type(return_value))
+    print(len(return_value))
