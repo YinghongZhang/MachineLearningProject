@@ -21,6 +21,7 @@ def label(target):
 
 def extract_train(strs):
     word_list = strs.split(' ')
+    allvol = ['AA', 'AE', 'AH', 'AO', 'AW', 'AY', 'EH', 'ER', 'EY', 'IH', 'IY', 'OW', 'OY', 'UH', 'UW']
     vol_list=[]       #in case you wanna use it,not sure it's useful or not
     cons_list=[]      #in case you wanna use it,not sure it's useful or not
     vol_count = 1
@@ -40,11 +41,11 @@ def extract_train(strs):
             cons_list.append(x)
     feature = {'vol_number':vol_count-1}
     #feature={}
-    for x in range(5):
-        if x < len(vol_list):
-            feature['pos'+str(x)] = vol_list[x]
+    for x in allvol:
+        if vol_list.count(x) == 0:
+            feature[x] = -1
         else:
-            feature['pos'+str(x)] = False
+            feature[x] = vol_list.index(x)
 
     # add something
     head_tails = []
@@ -76,11 +77,11 @@ def extract_test(strs):
 
 
     feature = {'vol_number':vol_number}
-    for x in range(5):
-        if x < len(vol_list):
-            feature['pos'+str(x)] = vol_list[x]
+    for x in allvol:
+        if vol_list.count(x) == 0:
+            feature[x] = -1
         else:
-            feature['pos'+str(x)] = False
+            feature[x] = vol_list.index(x)
 
     for i in range(6):
         if head_tails[i]==1:
@@ -145,7 +146,7 @@ def train(data, classifier_file):
     
 def test(data, classifier_file):
     feature = list(map(extract_test,data))
-    feature = vectorize(feature)
+    feature = vectorize(feature).toarray()
     f = open(classifier_file)
     classifier = pickle.load(f)
     y = classifier.predict(feature)
