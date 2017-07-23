@@ -8,28 +8,41 @@
 
 ### 二、特征值的选取
 
-+ 在网上查找英语重音规律的相关资料后，筛选出在训练中能够用到的特征主要有：
+* 选取特征值
+    + 在网上查找英语重音规律的相关资料后，筛选出在训练中能够用到的特征主要有：
+        
+        1. 依靠单词前后缀判断重音位置，主要筛选出以下一类前缀和五类后缀，分别作为6个特征，这几类前后缀会对重度位置产生影响：
+            
+            * 带有a, ab,ac, ad, al, be, con, de, dis em en, im, in, ,for, pre, pro, to, trans, mis, re, tans, un前缀的单词重音通常在第二音节上
 
-    1. 依靠单词前后缀判断重音位置，主要筛选出以下一类前缀和五类后缀，分别作为6个特征，这几类前后缀会对重度位置产生影响：
+            * 带aim, ain, cur, eem, duce, ere , firm, gn ,oin ,oke, ose, pt, rce, self, ume后缀的双音节词，重音通常在第二音节上
 
-        * 带有a, ab,ac, ad, al, be, con, de, dis em en, im, in, ,for, pre, pro, to, trans, mis, re, tans, un前缀的单词重音通常在第二音节上
+            * 重音位置与原词重音位置一样的词缀：al, acy, age, er, or,ful, ism, ist, ive, ize, ise, less, ly, ness, ship, ing, able, ry, ty
 
-        * 带aim, ain, cur, eem, duce, ere , firm, gn ,oin ,oke, ose, pt, rce, self, ume后缀的双音节词，重音通常在第二音节上
+            * 重音落到最后的词缀：ade, ette, ee, ese, que, aar, eer, zee, roo
 
-        * 重音位置与原词重音位置一样的词缀：al, acy, age, er, or,ful, ism, ist, ive, ize, ise, less, ly, ness, ship, ing, able, ry, ty
+            * 某些后缀改变了原词性导致重音向后拉一个音节：形容词后缀ic,名词后缀ion, ana, escence, escent, i, ics，itis,sis,id intrepid insipid
 
-        * 重音落到最后的词缀：ade, ette, ee, ese, que, aar, eer, zee, roo
+            * 弱读的后缀ible,able,ary,ery,ory
 
-        * 某些后缀改变了原词性导致重音向后拉一个音节：形容词后缀ic,名词后缀ion, ana, escence, escent, i, ics，itis,sis,id intrepid insipid
+        2. 音节数对重音也有影响：3个以下音节的单词，重读在第一音节上；3个或以上音节的单词，重读在倒数第三个音节上。因此把音节数作为一个特征
 
-        * 弱读的后缀ible,able,ary,ery,ory
+* 提取特征值
 
-    2. 音节数对重音也有影响：3个以下音节的单词，重读在第一音节上；3个或以上音节的单词，重读在倒数第三个音节上。因此把音节数作为一个特征
+    + 读入训练集数据后，判断每个单词的音节数量：
+
+        ![7](pictures/7.jpg)
+
+        并判断是否具有某类前后缀，以1和0来标记有无：
+        
+        ![8](pictures/8.jpg)
+
+        最后再把提取的特征转换成向量
 
 
 * 选取模型并进行训练：
-
-    + 提取训练集的特征再转成向量，并选择合适的模型进行训练，我们选择把f1-score作为判断模型好坏的标准。由于我们主要是需要得到较快速的数值型预测，因此选择使用树算法和逻辑回归比选择聚类算法可能会是较好选择
+    
+    + 我们选择把f1-score作为判断模型好坏的标准。由于我们主要是需要得到较快速的数值型预测，因此选择使用树算法和逻辑回归比选择聚类算法可能会是较好选择
 
     + 一开始选取了ExtraTreesClassifier、DecisionTreeClassifier这两种树算法，KNeighborsClassifier，SCV向量机、贝叶斯分类器GaussianNB，以及一个线性模型LogisticRegression等模型先做初步的尝试，代码运行结果如下：
 
@@ -57,7 +70,7 @@
 
         ![6](pictures/6.jpg)
 
-
+    小组成员讨论之后，认为存在由于某些特征与音节数关系影响不大而使f1-score值不高的可能，于是先做了各个特征与目标的相关性判断：
 ​        
 
 
