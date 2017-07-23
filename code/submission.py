@@ -71,9 +71,8 @@ def extract_test(strs):
     vol_number = len(vol_list)
 
     head_tails = []
-    for x in range(len(word_list[0])):
-        if word_list[0][x] == ':':
-            head_tails = head_and_tails(word_list[0][:x])
+    x = word_list[0].find(':')              # find the position of ':' 
+    head_tails = head_and_tails(word_list[0][:x])
 
 
     feature = {'vol_number':vol_number}
