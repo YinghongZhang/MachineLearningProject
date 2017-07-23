@@ -75,10 +75,10 @@ def extract_test(strs):
 def head_and_tails(word):
     head = ['A','AB','AC','AD','AL','BE','CON','DE','DIS','IM','IN','EM','EN','FOR','PRE',
     'PRO','TO','TRANS','MIS','RE','TANS','UN']
-    tail1 = ['AIM','AIN','CUR','DUCE','ERE','FIRM','GN','OIN','OKE','OSE','PT','RCE','SELF','UME']
+    tail1 = ['AIM','AIN','CUR', 'EEM', 'DUCE','ERE','FIRM','GN','OIN','OKE','OSE','PT','RCE','SELF','UME']
     tail2 = ['AL','ACY','AGE','ER','OR','FUL','ISM','IST','IVE','IZE','LESS','ISE','LY','NESS','SHIP','ING','ABLE','RY','TY']
-    tail3 = ['ADA','ETTE','EE','ESE','QUE','AAR','EER','ZEE','ROO']
-    tail4 = ['IC','ION','ANA','ESCENT','i','ICS','SIS']
+    tail3 = ['ADE','ETTE','EE','ESE','QUE','AAR','EER','ZEE','ROO']
+    tail4 = ['IC','ION','ANA','ESCENT','ESCENCE','i','ICS','SIS','ID','INTREPID','INSIPID']
     tail5 = ['ABLE','IBLE','ARY','ERY','ORY']
     result = [0,0,0,0,0,0]  #result array
     for x in head:
