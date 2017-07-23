@@ -20,7 +20,7 @@ m = m.fit(x,y)
 predict_y = m.predict(x)
 # print(m.score(x,y))
 print('f1-score:')
-print(f1_score(y,predict_y))
+print(f1_score(y,predict_y, average='weighted'))
 
 elapsed = (time.clock() - start)
 print("Time used:", elapsed)
