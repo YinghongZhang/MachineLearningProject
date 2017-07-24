@@ -41,12 +41,21 @@ def extract_train(strs):
             cons_list.append(x)
     feature = {'vol_number':vol_count-1}
     #feature={}
+    for x in range(len(vol_list[0])):
+        if vol_list[0][x] == ':':
+            vol_list[0] = vol_list[0][x+1:]
+            break
     for x in allvol:
         if vol_list.count(x) == 0:
-            feature[x] = -1
+            feature[x] = False
         else:
-            feature[x] = vol_list.index(x)
+            feature[x] = True
 
+    for x in range(5):
+        if x < len(vol_list):
+            feature['pos'+str(x)] = allvol.index(vol_list[x])
+        else:
+            feature['pos'+str(x)] = 22
     # add something
     head_tails = []
     x = word_list[0].find(':')              # find the position of ':' 
@@ -69,6 +78,10 @@ def extract_test(strs):
     for x in word_list:
         if allvol.count(x) > 0:
             vol_list.append(x)
+    for x in range(len(vol_list[0])):
+        if vol_list[0][x] == ':':
+            vol_list[0] = vol_list[0][x+1:]
+            break
     vol_number = len(vol_list)
 
     head_tails = []
@@ -79,10 +92,14 @@ def extract_test(strs):
     feature = {'vol_number':vol_number}
     for x in allvol:
         if vol_list.count(x) == 0:
-            feature[x] = -1
+            feature[x] = False
         else:
-            feature[x] = vol_list.index(x)
-
+            feature[x] = True
+    for x in range(5):
+        if x < len(vol_list):
+            feature['pos'+str(x)] = allvol.index(vol_list[x])
+        else:
+            feature['pos'+str(x)] = 22
     for i in range(6):
         if head_tails[i]==1:
             feature['ht'+str(i)]=True
@@ -143,7 +160,7 @@ def train(data, classifier_file):
     f = open(classifier_file, 'wb')
     pickle.dump(model,f)
     f.close()
-    
+
 def test(data, classifier_file):
     feature = list(map(extract_test,data))
     feature = vectorize(feature).toarray()
