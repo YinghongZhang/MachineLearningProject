@@ -171,11 +171,4 @@ def test(data, classifier_file):
     predict_y = list(map(int,y))
     return predict_y
 
-if __name__ == '__main__':
-    print('train..')
-    train("training_data.txt", 'classifier_file')
-    print('test..')
-    return_value = test("training_data.txt", 'classifier_file')
-    print(return_value)
-    print(type(return_value))
-    print(len(return_value))
+

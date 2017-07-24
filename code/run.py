@@ -63,9 +63,9 @@ if __name__ == '__main__':
 
     #voting = VotingClassifier(estimators=[('ef', ExtraTreesClassifier()), ('rf', RandomForestClassifier())], voting='soft', weights=[2,2])
 
-    models = ['RandomForestClassifier(n_estimators=10), ExtraTreesClassifier(), GaussianNB(), KNeighborsClassifier(),
+    models = [RandomForestClassifier(), ExtraTreesClassifier(), KNeighborsClassifier(),
         DecisionTreeClassifier(), LogisticRegression(), SVC()]
-    model_names = ['RandomForestClassifier()', 'ExtraTreesClassifier()', 'GaussianNB()', 'KNeighborsClassifier()', 
+    model_names = ['RandomForestClassifier()', 'ExtraTreesClassifier()', 'KNeighborsClassifier()', 
         'DecisionTreeClassifier()', 'LogisticRegression()', 'SVC()']
 
     for i in range(len(models)):
