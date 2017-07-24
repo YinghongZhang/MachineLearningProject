@@ -61,9 +61,9 @@ def cv_loop(model, name):
 if __name__ == '__main__':
 
 
-    models = [RandomForestClassifier(), ExtraTreesClassifier(), GaussianNB(), KNeighborsClassifier(),
+    models = [RandomForestClassifier(), ExtraTreesClassifier(), KNeighborsClassifier(),
         DecisionTreeClassifier(), LogisticRegression(), SVC()]
-    model_names = ['RandomForestClassifier()', 'ExtraTreesClassifier()', 'GaussianNB()', 'KNeighborsClassifier()', 
+    model_names = ['RandomForestClassifier()', 'ExtraTreesClassifier()', 'KNeighborsClassifier()', 
         'DecisionTreeClassifier()', 'LogisticRegression()', 'SVC()']
 
     for i in range(len(models)):

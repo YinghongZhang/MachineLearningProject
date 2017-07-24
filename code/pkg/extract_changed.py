@@ -20,12 +20,21 @@ def extract_train(strs):
             cons_list.append(x)
     feature = {'vol_number':vol_count-1}
     #feature={}
+    for x in range(len(vol_list[0])):
+        if vol_list[0][x] == ':':
+            vol_list[0] = vol_list[0][x+1:]
+            break
     for x in allvol:
         if vol_list.count(x) == 0:
-            feature[x] = -1
+            feature[x] = False
         else:
-            feature[x] = vol_list.index(x)
+            feature[x] = True
 
+    for x in range(5):
+        if x < len(vol_list):
+            feature['pos'+str(x)] = allvol.index(vol_list[x])
+        else:
+            feature['pos'+str(x)] = 22
     # add something
     head_tails = []
     x = word_list[0].find(':')              # find the position of ':' 
@@ -39,7 +48,6 @@ def extract_train(strs):
             feature['ht'+str(i)]=False
 
     return (feature, pri_stress_position)
-
 def extract_test(strs):
     word_list = strs.split(' ')
     allvol = ['AA', 'AE', 'AH', 'AO', 'AW', 'AY', 'EH', 'ER', 'EY', 'IH', 'IY', 'OW', 'OY', 'UH', 'UW']
