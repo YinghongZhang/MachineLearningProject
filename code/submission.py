@@ -143,7 +143,7 @@ def train(data, classifier_file):
     f = open(classifier_file, 'wb')
     pickle.dump(model,f)
     f.close()
-    
+
 def test(data, classifier_file):
     feature = list(map(extract_test,data))
     feature = vectorize(feature).toarray()

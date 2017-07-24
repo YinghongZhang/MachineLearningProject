@@ -33,34 +33,35 @@ def cv_loop(model, name):
     for train,test in kf.split(x):
 
         x_train,x_test,y_train,y_test = x[train],x[test],y[train],y[test]
-        print('fit--->', end='')
+        print('fit--->', end=' ')
         model.fit(x_train,y_train)
-        
-        print('test predit',end='')
+
+        print('test predit',end=' ')
         predict_y = model.predict(x_test)
         t_score = f1_score(y_test,predict_y, average='weighted')
         avg_test_f1score += t_score
-        print('test t1 score',end='')
+        print('test t1 score',end=' ')
         print(t_score, end='')
 
-        print('train predit',end='')
+        print('train predit',end=' ')
         predict_y = model.predict(x_train)
         t_score = f1_score(y_train,predict_y, average='weighted')
         avg_train_f1score += t_score
-        print('train t1 score',end='')
+        print('train t1 score',end=' ')
         print(t_score)
 
 
     print(name)
-    print('avg_test_f1score = ',end='')
+    print('avg_test_f1score = ',end=' ')
     print(avg_test_f1score/SPLITS)
-    print('avg_train_f1score = ',end='')
+    print('avg_train_f1score = ',end=' ')
     print(avg_train_f1score/SPLITS)
+    print("----------")
 
 if __name__ == '__main__':
-    
 
-    models = [RandomForestClassifier(), ExtraTreesClassifier(), GaussianNB(), KNeighborsClassifier(), 
+
+    models = [RandomForestClassifier(), ExtraTreesClassifier(), GaussianNB(), KNeighborsClassifier(),
         DecisionTreeClassifier(), LogisticRegression(), SVC()]
     model_names = ['RandomForestClassifier()', 'ExtraTreesClassifier()', 'GaussianNB()', 'KNeighborsClassifier()', 
         'DecisionTreeClassifier()', 'LogisticRegression()', 'SVC()']
