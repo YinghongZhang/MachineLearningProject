@@ -58,15 +58,23 @@ def cv_loop(model, name):
     elapsed = (time.clock() - start)
     print("Time used:", elapsed)
     print("----------")
+    return avg_test_f1score / SPLITS
 
 if __name__ == '__main__':
 
     #voting = VotingClassifier(estimators=[('ef', ExtraTreesClassifier()), ('rf', RandomForestClassifier())], voting='soft', weights=[2,2])
-
+    models = [RandomForestClassifier(n_estimators = 10, oob_score=True, random_state = 10)]
+    model_names = ['RandomForest()']
+    '''
     models = [RandomForestClassifier(), ExtraTreesClassifier(), KNeighborsClassifier(),
         DecisionTreeClassifier(), LogisticRegression(), SVC()]
-    model_names = ['RandomForestClassifier()', 'ExtraTreesClassifier()', 'KNeighborsClassifier()', 
+    model_names = ['RandomForestClassifier()', 'ExtraTreesClassifier()', 'KNeighborsClassifier()',
         'DecisionTreeClassifier()', 'LogisticRegression()', 'SVC()']
 
     for i in range(len(models)):
         cv_loop(models[i], model_names[i])
+    '''
+
+    score = cv_loop(RandomForestClassifier(n_estimators = 110, criterion='entropy', min_samples_split=4, random_state = 40), 'RandomForest()')
+    #score = cv_loop(RandomForestClassifier(n_estimators = 100, criterion='entropy', min_samples_split=4, random_state = 40), 'RandomForest()')
+    print(score)
