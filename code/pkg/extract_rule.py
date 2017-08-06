@@ -69,9 +69,9 @@ def secondSyll(word):
 
     return Result
 
+# 分离出每个data里的单词，用以规则判断
 def depart(data):
     l = []
-    wanted_data = []
     for d in data:
         word_list = d.split(' ')
         pos = word_list[0].find(':')
@@ -79,42 +79,47 @@ def depart(data):
         if (ultima(w) == True or penult(w) == True or antepenultimate(w) == True
             or firstSyll(w) == True or secondSyll(w) == True):
             l.append(w)
-            wanted_data.append(d)
-    print(len(l))
-    return l, wanted_data
+    print('符合规则判断的词汇有：', len(l), '个 ')
+    return l
 
+# 用规则判断预测位置
 def predict(x, data):
     predict_y = []
     i = 0
     for w in data:
+        #末音节位置
         if (ultima(w) == True):
             predict_y.append(x[i]['vol_number'])
             continue
+        #倒数第二音节
         if (penult(w) == True):
-            if (x[i]['vol_number'] > 2):
-                predict_y.append(x[i]['vol_number'])
+            if (x[i]['vol_number'] >= 2):
+                predict_y.append(x[i]['vol_number'] - 1)
                 continue
+        #倒数第三音节
         if (antepenultimate(w) == True):
-            if (x[i]['vol_number'] > 3):
-                predict_y.append(x[i]['vol_number'])
+            if (x[i]['vol_number'] >= 3):
+                predict_y.append(x[i]['vol_number'] - 2)
                 continue
+        #第一音节
         if (firstSyll(w) == True):
             if (x[i]['vol_number'] >= 1):
                 predict_y.append(1)
                 continue
+        #第二音节
         if (secondSyll(w) == True):
             if (x[i]['vol_number'] >= 2):
                 predict_y.append(2)
                 continue
-        predict_y.append(0)
+        predict_y.append(1)
         i += 1
     return predict_y
 
 
 if __name__ == '__main__':
     data = helper.read_data('../asset/training_data.txt')
-    word_list, wanted_data = depart(data)
-    mid = list(map(extract_changed.extract_train, wanted_data))
+    word_list = depart(data)
+    mid = list(map(extract_changed.extract_train, data))
     feature, true_y = vectorizer.departit(mid)
     predict_y = predict(feature, word_list)
     print(f1_score(true_y,predict_y, average='weighted'))
