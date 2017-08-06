@@ -29,7 +29,7 @@ def result(arr):
     r = []
     for x in arr:
         r.append(vote(x))
-    return r   
+    return r
 
 #input an array ,feedback the highest freq one
 def vote(arr):

@@ -48,6 +48,7 @@ def extract_train(strs):
             feature['ht'+str(i)]=False
 
     return (feature, pri_stress_position)
+
 def extract_test(strs):
     word_list = strs.split(' ')
     allvol = ['AA', 'AE', 'AH', 'AO', 'AW', 'AY', 'EH', 'ER', 'EY', 'IH', 'IY', 'OW', 'OY', 'UH', 'UW']
