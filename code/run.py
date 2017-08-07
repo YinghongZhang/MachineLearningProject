@@ -1,6 +1,7 @@
 import time
 from pkg import preprocess
 from pkg import vectorizer
+from pkg import extract_rule
 from sklearn.model_selection import KFold
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.ensemble import ExtraTreesClassifier
