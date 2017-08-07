@@ -19,9 +19,13 @@ from sklearn.metrics import f1_score
 def ultima(word):
     TAILS = ['ADE', 'EER', 'ESE', 'ESQUE', 'AIN', 'EE', 'ETTE', 'IQUE', 'INE', 'OON']
 
-    Result = bool(word[-len(tail):] == tail for tail in TAILS if (len(tail) <= len(word)))
+    for tail in TAILS:
+        if (len(tail) <= len(word)):
+            if (word[-len(tail):] == tail):
+                #print("len:", len(tail), "Part:", word[-len(tail):])
+                return True
 
-    return Result
+    return False
 
 #判断倒数第二音节
 def penult(word):
@@ -33,18 +37,28 @@ def penult(word):
     'EOUS', 'IAL', 'IAN', 'IENT', 'IOUS', 'ISH', 'IT',
     'LIAR', 'SIVE', 'TAL', 'UOUS', 'AL', 'TARIAN', 'SIS', 'ENCE', 'ENT']
 
-    Result = bool(word[-len(tail):] == tail for tail in TAILS if (len(tail) <= len(word)))
+    for tail in TAILS:
+        if (len(tail) <= len(word)):
+            if (word[-len(tail):] == tail):
+                #print("len:", len(tail), "Part:", word[-len(tail):])
+                return True
 
-    return Result
+    return False
 
 #判断倒数第三音节
 def antepenultimate(word):
     TAILS = ['OUS', 'ITY', 'IAN', 'ANCE', 'ANCY', 'ENCE',
     'ENCY', 'ANT', 'ENT', 'LOGY', 'NOMY', 'ICAL', 'ITY', 'ABLE', 'ARY,' 'ERY', 'ORY']
 
-    Result = bool(word[-len(tail):] == tail for tail in TAILS if (len(tail) <= len(word)))
+    Result = False
 
-    return Result
+    for tail in TAILS:
+        if (len(tail) <= len(word)):
+            if (word[-len(tail):] == tail):
+                #print("len:", len(tail), "Part:", word[-len(tail):])
+                return True
+
+    return False
 
 #判断第一音节
 def firstSyll(word):
@@ -54,10 +68,17 @@ def firstSyll(word):
     WORDS = ['ORIGINAL', 'PRISONAL', 'RESIDUAL', 'ADJECTIVAL',
     'ANECDOTAL', 'CUSTOMARY', 'SCIENTIST', 'SLAVERY', 'ADVERTISE', 'MESSAGE']
 
-    Result = bool(word == w for w in WORDS)
-    Result = Result or bool(word[-len(tail):] == tail for tail in TAILS if (len(tail) <= len(word)))
+    for w in WORDS:
+        if (w == word):
+            return True
 
-    return Result
+    for tail in TAILS:
+        if (len(tail) <= len(word)):
+            if (word[-len(tail):] == tail):
+                #print("len:", len(tail), "Part:", word[-len(tail):])
+                return True
+
+    return False
 
 #判断第二音节
 def secondSyll(word):
@@ -66,10 +87,18 @@ def secondSyll(word):
     TAILS = ['AIM', 'AIN', 'CUR', 'EEM', 'DUCE', 'ERE', 'FIRM',
     'GN', 'OIN', 'OKE', 'OSE', 'PT', 'RCE', 'SELF', 'UME']
 
-    Result = bool(word[:len(head)] == head for head in HEADS if (len(head) <= len(word)))
-    Result = Result or bool(word[-len(tail):] == tail for tail in TAILS if (len(tail) <= len(word)))
+    for head in HEADS:
+        if (len(head) <= len(word)):
+            if (word[:len(head)] == head):
+                return True
 
-    return Result
+    for tail in TAILS:
+        if (len(tail) <= len(word)):
+            if (word[-len(tail):] == tail):
+                #print("len:", len(tail), "Part:", word[-len(tail):])
+                return True
+
+    return False
 
 # 分离出每个data里的单词，用以规则判断
 def depart(data):
@@ -78,44 +107,61 @@ def depart(data):
         word_list = d.split(' ')
         pos = word_list[0].find(':')
         w = word_list[0][:pos]
-        if (ultima(w) == True or penult(w) == True or antepenultimate(w) == True
-            or firstSyll(w) == True or secondSyll(w) == True):
-            l.append(w)
-    print('符合规则判断的词汇有：', len(l), '个 ')
+        l.append(w)
     return l
 
 # 用规则判断预测位置
-def predict(x, data):
-    predict_y = []
+def predict(x, data, true_y):
+    predict_y = []                   # 规则判断的结果
+    predict_way = []                 # 记录是属于哪一种规则判断
+    words = []                       # 能够用规则判断的词汇
+    extract_y = []                   # 能够用规则判断的词汇的正确位置
     i = 0
     for w in data:
-        #末音节位置
+        #末音节位置，没有符合后缀的单词
         if (ultima(w) == True):
             predict_y.append(x[i]['vol_number'])
+            predict_way.append('末音节')
+            words.append(w)
+            extract_y.append(true_y[i])
+            i += 1
             continue
+
         #倒数第二音节
+        #成功率：0.81
         if (penult(w) == True):
             if (x[i]['vol_number'] >= 2):
                 predict_y.append(x[i]['vol_number'] - 1)
+                predict_way.append('倒数第二音节')
+                words.append(w)
+                extract_y.append(true_y[i])
+                i += 1
                 continue
+
         #倒数第三音节
+        #成功率：0.67
         if (antepenultimate(w) == True):
             if (x[i]['vol_number'] >= 3):
                 predict_y.append(x[i]['vol_number'] - 2)
+                predict_way.append('倒数第三音节')
+                words.append(w)
+                extract_y.append(true_y[i])
+                i += 1
                 continue
+
         #第一音节
+        #成功率0.65
         if (firstSyll(w) == True):
-            if (x[i]['vol_number'] >= 1):
-                predict_y.append(1)
-                continue
-        #第二音节
-        if (secondSyll(w) == True):
-            if (x[i]['vol_number'] >= 2):
-                predict_y.append(2)
-                continue
-        predict_y.append(1)
+            predict_y.append(1)
+            predict_way.append('第一音节')
+            words.append(w)
+            extract_y.append(true_y[i])
+            i += 1
+            continue
+
         i += 1
-    return predict_y
+
+    return predict_y, extract_y, words, predict_way
 
 
 if __name__ == '__main__':
@@ -123,5 +169,31 @@ if __name__ == '__main__':
     word_list = depart(data)
     mid = list(map(extract_changed.extract_train, data))
     feature, true_y = vectorizer.departit(mid)
-    predict_y = predict(feature, word_list)
-    print(f1_score(true_y,predict_y, average='weighted'))
+
+    # predict_y 是预测的位置
+    # extract_y 是正确的位置
+    # words 是可以规则判断的所有单词
+    # predict_way 存的是每个单词属于哪一种规则(属于末音节，倒数第二....)
+    predict_y, extract_y, words, predict_way = predict(feature, word_list, true_y)
+
+    print("f1_score =", f1_score(predict_y, extract_y, average='weighted'))
+
+    # wrongPredictInfo 记录错误单词
+    # wrongPredictInfo是一个链表，它存的单位也是链表
+    wrongPredictInfo = []
+    i = 0
+    count = 0
+    for b in predict_y:                       #计算成功率
+        if (b == extract_y[i]):
+            count += 1
+        else:
+            pre = "Predict: " + str(predict_y[i])
+            t = "True: " + str(extract_y[i])
+            wrongPredictInfo.append([words[i], pre, t, predict_way[i]])
+        i += 1
+
+    for info in wrongPredictInfo:
+        print(info[0], info[1], info[2], info[3])
+
+    print("成功率:", count / len(predict_y))
+    print("失败单词个数:", len(wrongPredictInfo))
