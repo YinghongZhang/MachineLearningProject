@@ -48,7 +48,8 @@ def penult(word):
 #判断倒数第三音节
 def antepenultimate(word):
     TAILS = ['OUS', 'ITY', 'IAN', 'ANCE', 'ANCY', 'ENCE',
-    'ENCY', 'ANT', 'ENT', 'LOGY', 'NOMY', 'ICAL', 'ITY', 'ABLE', 'ARY,' 'ERY', 'ORY']
+    'ENCY', 'ANT', 'ENT', 'LOGY', 'NOMY', 'ICAL',
+    'IA', 'ARIUM', 'CRACY', 'CRAT', 'GRAPHY', 'ILE', 'TUDE']
 
     Result = False
 
@@ -120,40 +121,41 @@ def predict(x, data, true_y):
     for w in data:
         #末音节位置，没有符合后缀的单词
         if (ultima(w) == True):
-            predict_y.append(x[i]['vol_number'])
-            predict_way.append('末音节')
-            words.append(w)
-            extract_y.append(true_y[i])
+            if (x[i]['vol_number'] >= 3):
+                predict_y.append(x[i]['vol_number'])
+                predict_way.append(-1)
+                words.append(w)
+                extract_y.append(true_y[i])
             i += 1
             continue
 
         #倒数第二音节
         #成功率：0.81
         if (penult(w) == True):
-            if (x[i]['vol_number'] >= 2):
+            if (x[i]['vol_number'] >= 3):
                 predict_y.append(x[i]['vol_number'] - 1)
-                predict_way.append('倒数第二音节')
+                predict_way.append(-2)
                 words.append(w)
                 extract_y.append(true_y[i])
-                i += 1
-                continue
+            i += 1
+            continue
 
         #倒数第三音节
         #成功率：0.67
         if (antepenultimate(w) == True):
             if (x[i]['vol_number'] >= 3):
                 predict_y.append(x[i]['vol_number'] - 2)
-                predict_way.append('倒数第三音节')
+                predict_way.append(-3)
                 words.append(w)
                 extract_y.append(true_y[i])
-                i += 1
-                continue
+            i += 1
+            continue
 
         #第一音节
         #成功率0.65
         if (firstSyll(w) == True):
             predict_y.append(1)
-            predict_way.append('第一音节')
+            predict_way.append(1)
             words.append(w)
             extract_y.append(true_y[i])
             i += 1
@@ -183,17 +185,25 @@ if __name__ == '__main__':
     wrongPredictInfo = []
     i = 0
     count = 0
+    # right wrong count记录各种规则的正确判断、错误判断的个数
+    # 1代表第一音节，-1代表末音节，以此类推
+    right_count = {1: 0, -1: 0, -2: 0, -3: 0}
+    wrong_count = {1: 0, -1: 0, -2: 0, -3: 0}
     for b in predict_y:                       #计算成功率
         if (b == extract_y[i]):
             count += 1
+            right_count[predict_way[i]] += 1
         else:
             pre = "Predict: " + str(predict_y[i])
             t = "True: " + str(extract_y[i])
+            wrong_count[predict_way[i]] += 1
             wrongPredictInfo.append([words[i], pre, t, predict_way[i]])
         i += 1
 
-    for info in wrongPredictInfo:
-        print(info[0], info[1], info[2], info[3])
-
-    print("成功率:", count / len(predict_y))
+    print("第一音节正确率：", right_count[1] / (right_count[1] + wrong_count[1]))
+    print("末音节正确率：", right_count[-1] / (right_count[-1] + wrong_count[-1]))
+    print("倒数第二音节正确率：", right_count[-2] / (right_count[-2] + wrong_count[-2]))
+    print("倒数第三音节正确率：", right_count[-3] / (right_count[-3] + wrong_count[-3]))
+    print("单词总个数:", len(predict_y))
     print("失败单词个数:", len(wrongPredictInfo))
+    print("成功率:", count / len(predict_y))
