@@ -49,6 +49,8 @@ def antepenultimate(word):
 #判断第一音节
 def firstSyll(word):
     TAILS = ['ARY', 'ERY', 'ORY', 'ISM', 'IST', 'MONY', 'MENT']
+
+    # 这些单词的重音都在第一个位置
     WORDS = ['ORIGINAL', 'PRISONAL', 'RESIDUAL', 'ADJECTIVAL',
     'ANECDOTAL', 'CUSTOMARY', 'SCIENTIST', 'SLAVERY', 'ADVERTISE', 'MESSAGE']
 
