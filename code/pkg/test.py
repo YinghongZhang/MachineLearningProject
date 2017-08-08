@@ -97,6 +97,7 @@ if __name__ == '__main__':
 
     count = 0
     l = []
+    wantTails = {1:[], 2:[], -1:[], -2:[], -3:[]}
     for tail in TAILS:
         ifPass = False
         y = predict_y[tail]
@@ -104,20 +105,27 @@ if __name__ == '__main__':
         pc[-2] = pc[-1]
         pc[-3] = pc[-1]
         print("后缀：", tail)
+        biggest = 0
+        way = 0
         for key in pc:
             if (pc[key] > 0):
-                if (y[key] / pc[key] > 0.7):
+                pro = y[key] / pc[key]
+                if (pro > 0.7):
+                    if (pro > biggest):
+                        biggest = pro
+                        way = key
                     ifPass = True
-                    l.append(y[key] / pc[key])
+                    l.append(pro)
                     print(key, " 个数：", pc[key], end=" ")
-                    print("正确率：", y[key] / pc[key])
+                    print("正确率：", pro)
         if(ifPass):
             count += 1
-    print("总共", len(TAILS), "个后缀测试", ", 可以采用的后缀有：", count, " 个")
+            wantTails[way].append(tail)
 
-    plt.hist(l, alpha = 0.5)
-    plt.title("0.7以上后缀的概率分布")
-    plt.show()
+    print("总共", len(TAILS), "个后缀测试", ", 可以采用的后缀有：", count, " 个")
+    print(np.mean(l))
+    for key in wantTails:
+        print(key, " Tails: ", wantTails[key])
     '''
     print("第一音节个数：", pc[1], end=" ")
     print("第一音节正确率：", y[1] / (pc[1]+1))

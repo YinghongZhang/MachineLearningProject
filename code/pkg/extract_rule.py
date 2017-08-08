@@ -17,64 +17,41 @@ from sklearn.metrics import f1_score
 
 #判断末音节重音
 def ultima(word):
-    #TAILS = ['ADE', 'EER', 'ESE', 'ESQUE', 'AIN', 'EE', 'ETTE', 'IQUE0.75', 'INE0.0625', 'OON 0.16']
-    #TAILS = ['ADE', 'ETTE', 'EE', 'ESE', 'QUE', 'AAR', 'EER', 'ZEE', 'ROO']
-    # 0.2   0.53  0.26  0.39 0.57 0 0.70 0 0
-    TAILS = ['OON']
+    TAILS = ['EER', 'FIRM', 'UME']
     for tail in TAILS:
         if (len(tail) <= len(word)):
             if (word[-len(tail):] == tail):
-                #print("len:", len(tail), "Part:", word[-len(tail):])
                 return True
 
     return False
 
 #判断倒数第二音节
 def penult(word):
-    #特殊情况，在倒数第三音节
-    if word == 'rhetoric':
-        return False
-
-    '''
-    TAILS = ['IC', 'ION', 'ANA', 'ESCENCE', 'ESCENT', 'I', 'ICS', 'ITIS', 'ID',
-    'EOUS', 'IAL', 'IAN', 'IENT', 'IOUS', 'ISH', 'IT',
-    'LIAR', 'SIVE', 'TAL', 'UOUS', 'AL', 'TARIAN', 'SIS', 'ENCE', 'ENT']
-    '''
-    TAILS = ['IC','ION','ANA','ESCENT','ESCENCE','I','ICS','SIS','ID','INTREPID','INSIPID']
+    TAILS = ['ION', 'I', 'IC', 'ICS', 'ITIS', 'ESCENT', 'ESCENCE', 'SIVE', 'ANA', 'LIAR']
 
     for tail in TAILS:
         if (len(tail) <= len(word)):
             if (word[-len(tail):] == tail):
-                #print("len:", len(tail), "Part:", word[-len(tail):])
                 return True
 
     return False
 
 #判断倒数第三音节
 def antepenultimate(word):
-    '''
-    TAILS = ['OUS', 'ITY', 'IAN', 'ANCE', 'ANCY', 'ENCE',
-    'ENCY', 'ANT', 'ENT', 'LOGY', 'NOMY', 'ICAL',
-    'IA', 'ARIUM', 'CRACY', 'CRAT', 'GRAPHY', 'ILE', 'TUDE', 'MENT']
-    '''
-    #TAILS = ['AL', 'IAL', 'ICAL', 'IA', 'IUM', 'OUS', 'IAN', 'ITY']
-    # 0.59(348) 0.47(57) 1(47) 0.73(304) 1(54) 0.65(173) 0.76(176) 1(111)
-    TAILS = ['ITY']
-    Result = False
+    TAILS = ['OKE', 'IA', 'OIN', 'ICAL', 'ENCY', 'LOGY', 'ZEE', 'IAN',
+    'ERY', 'IST', 'OON', 'IENT', 'AIM', 'UOUS', 'ITY', 'TUDE', 'IUM', 'CRAT']
 
     for tail in TAILS:
         if (len(tail) <= len(word)):
             if (word[-len(tail):] == tail):
-                #print("len:", len(tail), "Part:", word[-len(tail):])
                 return True
 
     return False
 
 #判断第一音节
 def firstSyll(word):
-    TAILS = ['ARY', 'ERY', 'ORY', 'ISM', 'IST', 'MONY']
-    #'IST'
-    # 这些单词的重音都在第一个位置
+    TAILS = ['ANCY', 'AAR', 'ARY', 'ILE', 'ISM', 'ORY', 'MONY', 'ISH']
+
     WORDS = ['ORIGINAL', 'PRISONAL', 'RESIDUAL', 'ADJECTIVAL',
     'ANECDOTAL', 'CUSTOMARY', 'SCIENTIST', 'SLAVERY', 'ADVERTISE', 'MESSAGE']
 
@@ -85,7 +62,6 @@ def firstSyll(word):
     for tail in TAILS:
         if (len(tail) <= len(word)):
             if (word[-len(tail):] == tail):
-                #print("len:", len(tail), "Part:", word[-len(tail):])
                 return True
 
     return False
@@ -94,8 +70,8 @@ def firstSyll(word):
 def secondSyll(word):
     HEADS = ['A', 'AB', 'AC', 'AD', 'AL', 'BE', 'CON', 'DE',
     'DIS', 'EM', 'EN', 'IN', 'MIS', 'RE', 'TANS', 'UN']
-    TAILS = ['AIM', 'AIN', 'CUR', 'EEM', 'DUCE', 'ERE', 'FIRM',
-    'GN', 'OIN', 'OKE', 'OSE', 'PT', 'RCE', 'SELF', 'UME']
+    TAILS = ['OKE', 'IA', 'OIN', 'ICAL', 'ENCY', 'LOGY', 'ZEE',
+    'IAN', 'ERY', 'IST', 'OON', 'IENT', 'AIM', 'UOUS', 'ITY', 'TUDE', 'IUM', 'CRAT']
 
     for head in HEADS:
         if (len(head) <= len(word)):
@@ -105,7 +81,6 @@ def secondSyll(word):
     for tail in TAILS:
         if (len(tail) <= len(word)):
             if (word[-len(tail):] == tail):
-                #print("len:", len(tail), "Part:", word[-len(tail):])
                 return True
 
     return False
@@ -128,7 +103,6 @@ def predict(x, data, true_y):
     extract_y = []                   # 能够用规则判断的词汇的正确位置
     i = 0
     for w in data:
-        #末音节位置，没有符合后缀的单词
         if (ultima(w) == True):
             if (x[i]['vol_number'] >= 3):
                 predict_y.append(x[i]['vol_number'])
@@ -138,8 +112,6 @@ def predict(x, data, true_y):
             i += 1
             continue
 
-        #倒数第二音节
-        #成功率：0.81
         if (penult(w) == True):
             if (x[i]['vol_number'] >= 3):
                 predict_y.append(x[i]['vol_number'] - 1)
@@ -149,8 +121,6 @@ def predict(x, data, true_y):
             i += 1
             continue
 
-        #倒数第三音节
-        #成功率：0.67
         if (antepenultimate(w) == True):
             if (x[i]['vol_number'] >= 3):
                 predict_y.append(x[i]['vol_number'] - 2)
@@ -160,8 +130,6 @@ def predict(x, data, true_y):
             i += 1
             continue
 
-        #第一音节
-        #成功率0.65
         if (firstSyll(w) == True):
             predict_y.append(1)
             predict_way.append(1)
