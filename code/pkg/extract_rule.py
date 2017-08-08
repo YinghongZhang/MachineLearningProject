@@ -17,8 +17,10 @@ from sklearn.metrics import f1_score
 
 #判断末音节重音
 def ultima(word):
-    #TAILS = ['ADE', 'EER', 'ESE', 'ESQUE', 'AIN', 'EE', 'ETTE', 'IQUE', 'INE', 'OON']
-    TAILS = ['ADE', 'ETTE', 'EE', 'ESE', 'QUE', 'AAR', 'EER', 'ZEE', 'ROO']
+    #TAILS = ['ADE', 'EER', 'ESE', 'ESQUE', 'AIN', 'EE', 'ETTE', 'IQUE0.75', 'INE0.0625', 'OON 0.16']
+    #TAILS = ['ADE', 'ETTE', 'EE', 'ESE', 'QUE', 'AAR', 'EER', 'ZEE', 'ROO']
+    # 0.2   0.53  0.26  0.39 0.57 0 0.70 0 0
+    TAILS = ['OON']
     for tail in TAILS:
         if (len(tail) <= len(word)):
             if (word[-len(tail):] == tail):
@@ -55,7 +57,9 @@ def antepenultimate(word):
     'ENCY', 'ANT', 'ENT', 'LOGY', 'NOMY', 'ICAL',
     'IA', 'ARIUM', 'CRACY', 'CRAT', 'GRAPHY', 'ILE', 'TUDE', 'MENT']
     '''
-    TAILS = ['AL', 'IAL', 'ICAL', 'IA', 'IUM', 'OUS', 'IAN', 'ITY']
+    #TAILS = ['AL', 'IAL', 'ICAL', 'IA', 'IUM', 'OUS', 'IAN', 'ITY']
+    # 0.59(348) 0.47(57) 1(47) 0.73(304) 1(54) 0.65(173) 0.76(176) 1(111)
+    TAILS = ['ITY']
     Result = False
 
     for tail in TAILS:
@@ -206,9 +210,13 @@ if __name__ == '__main__':
         i += 1
 
     print("第一音节正确率：", right_count[1] / (right_count[1] + wrong_count[1]))
+    print("第一音节个数：", right_count[1] + wrong_count[1])
     print("末音节正确率：", right_count[-1] / (right_count[-1] + wrong_count[-1]))
+    print("末音节个数：", right_count[-1] + wrong_count[-1])
     print("倒数第二音节正确率：", right_count[-2] / (right_count[-2] + wrong_count[-2]))
+    print("倒数第二音节个数：", right_count[-2] + wrong_count[-2])
     print("倒数第三音节正确率：", right_count[-3] / (right_count[-3] + wrong_count[-3]))
+    print("倒数第三音节个数：", right_count[-3] + wrong_count[-3])
     print("单词总个数:", len(predict_y))
     print("失败单词个数:", len(wrongPredictInfo))
     print("成功率:", count / len(predict_y))
