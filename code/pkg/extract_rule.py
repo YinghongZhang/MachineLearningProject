@@ -17,8 +17,8 @@ from sklearn.metrics import f1_score
 
 #判断末音节重音
 def ultima(word):
-    TAILS = ['ADE', 'EER', 'ESE', 'ESQUE', 'AIN', 'EE', 'ETTE', 'IQUE', 'INE', 'OON']
-
+    #TAILS = ['ADE', 'EER', 'ESE', 'ESQUE', 'AIN', 'EE', 'ETTE', 'IQUE', 'INE', 'OON']
+    TAILS = ['ADE', 'ETTE', 'EE', 'ESE', 'QUE', 'AAR', 'EER', 'ZEE', 'ROO']
     for tail in TAILS:
         if (len(tail) <= len(word)):
             if (word[-len(tail):] == tail):
@@ -33,9 +33,12 @@ def penult(word):
     if word == 'rhetoric':
         return False
 
+    '''
     TAILS = ['IC', 'ION', 'ANA', 'ESCENCE', 'ESCENT', 'I', 'ICS', 'ITIS', 'ID',
     'EOUS', 'IAL', 'IAN', 'IENT', 'IOUS', 'ISH', 'IT',
     'LIAR', 'SIVE', 'TAL', 'UOUS', 'AL', 'TARIAN', 'SIS', 'ENCE', 'ENT']
+    '''
+    TAILS = ['IC','ION','ANA','ESCENT','ESCENCE','I','ICS','SIS','ID','INTREPID','INSIPID']
 
     for tail in TAILS:
         if (len(tail) <= len(word)):
@@ -47,10 +50,12 @@ def penult(word):
 
 #判断倒数第三音节
 def antepenultimate(word):
+    '''
     TAILS = ['OUS', 'ITY', 'IAN', 'ANCE', 'ANCY', 'ENCE',
     'ENCY', 'ANT', 'ENT', 'LOGY', 'NOMY', 'ICAL',
-    'IA', 'ARIUM', 'CRACY', 'CRAT', 'GRAPHY', 'ILE', 'TUDE']
-
+    'IA', 'ARIUM', 'CRACY', 'CRAT', 'GRAPHY', 'ILE', 'TUDE', 'MENT']
+    '''
+    TAILS = ['AL', 'IAL', 'ICAL', 'IA', 'IUM', 'OUS', 'IAN', 'ITY']
     Result = False
 
     for tail in TAILS:
@@ -63,8 +68,8 @@ def antepenultimate(word):
 
 #判断第一音节
 def firstSyll(word):
-    TAILS = ['ARY', 'ERY', 'ORY', 'ISM', 'IST', 'MONY', 'MENT']
-
+    TAILS = ['ARY', 'ERY', 'ORY', 'ISM', 'IST', 'MONY']
+    #'IST'
     # 这些单词的重音都在第一个位置
     WORDS = ['ORIGINAL', 'PRISONAL', 'RESIDUAL', 'ADJECTIVAL',
     'ANECDOTAL', 'CUSTOMARY', 'SCIENTIST', 'SLAVERY', 'ADVERTISE', 'MESSAGE']
