@@ -113,6 +113,16 @@ def predict(x, data):
     word_index = []                  # 适用于规则判断的词汇的下标列表++++++++++++++++++++
     index = 0                        # 词汇的下标++++++++++++++++++++
     for w in data:
+        if (x[i]['vol_number'] == 1):
+            predict_y.append(1)
+            predict_way.append(0)
+            words.append(w)
+            extract_y.append(true_y[i])
+            if (true_y[i] != 1):
+                print("error")
+            word_index.append(index)
+            i += 1
+            continue
         if (ultima(w) == True):
             if (x[i]['vol_number'] >= 3):
                 predict_y.append(x[index]['vol_number'])
@@ -152,7 +162,8 @@ def cv_loop(model, name):
 
         data_test = data[test[0]:test[-1]+1]    # 用于规则预测的测试集数据
         word_list = depart(data_test)           # 测试集单词
-        mid = list(map(extract_changed.extract_train, data))
+
+        mid = list(map(extract_changed.extract_train, data[test[0]:test[-1]+1]))
         feature, true_y = vectorizer.departit(mid)
         t_predict_y, word_index = predict(feature, word_list)
         # 用规则判断结果去替换部分模型测试的结果
@@ -160,6 +171,7 @@ def cv_loop(model, name):
         for index in word_index:
             predict_y[index] = t_predict_y[i]
             i += 1
+
 
         # 计算分数
         t_score = f1_score(y_test,predict_y, average='weighted')
