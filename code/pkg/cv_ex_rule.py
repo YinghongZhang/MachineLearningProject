@@ -191,7 +191,6 @@ def cv_loop(model, name):
     all_score = 0
 
     avg_train_f1score=0
-    avg_test_f1score=0
     
     for train,test in kf.split(x):
         x_train,x_test,y_train,y_test = x[train],x[test],y[train],y[test]
@@ -201,7 +200,8 @@ def cv_loop(model, name):
         
         data_test = data[test[0]:test[-1]+1]    # 用于规则预测的测试集数据
         word_list = depart(data_test)           # 测试集单词
-        mid = list(map(extract_changed.extract_train, data))
+
+        mid = list(map(extract_changed.extract_train, data[test[0]:test[-1]+1]))
         feature, true_y = vectorizer.departit(mid)
         t_predict_y, extract_y, words, predict_way, word_index = predict(feature, word_list, true_y)
         # 用规则判断结果去替换部分模型测试的结果
@@ -209,6 +209,7 @@ def cv_loop(model, name):
         for index in word_index:
             predict_y[index] = t_predict_y[i]
             i += 1
+
 
         # 计算分数
         t_score = f1_score(y_test,predict_y, average='weighted')
