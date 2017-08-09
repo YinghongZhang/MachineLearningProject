@@ -58,17 +58,19 @@ def predict(x, data):
     word_index = []                  # 适用于规则判断的词汇的下标列表++++++++++++++++++++
     index = 0                        # 词汇的下标++++++++++++++++++++
     for w in data:
-        if (ultima(w) == True):
-            if (x[i]['vol_number'] >= 3):
+        if (x[index]['vol_number'] == 1):
+            predict_y.append(1)
+            word_index.append(index) 
+        elif (ultima(w) == True):
+            if (x[index]['vol_number'] >= 3):
                 predict_y.append(x[index]['vol_number'])
                 word_index.append(index)
         elif (penult(w) == True):
-            if (x[i]['vol_number'] >= 3):
+            if (x[index]['vol_number'] >= 3):
                 predict_y.append(x[index]['vol_number'] - 1)
                 word_index.append(index)
-
         elif (antepenultimate(w) == True):
-            if (x[i]['vol_number'] >= 3):
+            if (x[index]['vol_number'] >= 3):
                 predict_y.append(x[index]['vol_number'] - 2)
                 word_index.append(index)
         elif (firstSyll(w) == True):
@@ -253,14 +255,15 @@ def test(data, classifier_file):
     predict_y = list(map(int,y))
     return predict_y
 
-if __name__ == '__main__':
-    from pkg.helper import read_data
-    train_data = read_data("asset/training_data.txt")
-    train(train_data, 'classifier_file')
-    test_data = read_data("asset/tiny_test.txt")
-    return_value = test(test_data, 'classifier_file')
-    print(return_value)
-    print(type(return_value))
-    print(len(return_value))
+# if __name__ == '__main__':
+#     from pkg.helper import read_data
+#     train_data = read_data("asset/training_data.txt")
+#     train(train_data, 'classifier_file')
+#     test_data = read_data("asset/tiny_test.txt")
+#     return_value = test(test_data, 'classifier_file')
+#     print(return_value)
+#     print(type(return_value))
+#     print(len(return_value))
 
-    print("Done")
+#     print("Done")
+
