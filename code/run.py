@@ -1,7 +1,6 @@
 import time
 from pkg import preprocess
 from pkg import vectorizer
-from pkg import extract_rule
 from sklearn.model_selection import KFold
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.ensemble import ExtraTreesClassifier
@@ -76,6 +75,6 @@ if __name__ == '__main__':
         cv_loop(models[i], model_names[i])
     '''
 
-    score = cv_loop(RandomForestClassifier(n_estimators = 110, criterion='entropy', min_samples_split=4, random_state = 40), 'RandomForest()')
+    score = cv_loop(RandomForestClassifier(), 'RandomForest()')
     #score = cv_loop(RandomForestClassifier(n_estimators = 100, criterion='entropy', min_samples_split=4, random_state = 40), 'RandomForest()')
     print(score)

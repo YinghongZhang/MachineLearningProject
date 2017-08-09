@@ -155,7 +155,7 @@ def get(training_data):
 
 def train(data, classifier_file):
     x,y = get(data)
-    model = RandomForestClassifier()
+    model = RandomForestClassifier(n_estimators = 110, criterion='entropy', min_samples_split=4, random_state = 40)
     model.fit(x,y)
     f = open(classifier_file, 'wb')
     pickle.dump(model,f)

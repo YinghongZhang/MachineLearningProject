@@ -58,26 +58,28 @@ def predict(x, true_y, data):
     i = 0
     for tail in TAILS:
         y = {1:0, 2:0, -1:0, -2:0, -3:0}
-        pc = {1:0, 2:0, -1:0}
+        pc = {1:0, 2:0, -1:0, -2:0, -3:0}
         for w in data:
             if (hasTail(tail, w) == True):
 
                 pc[1] += 1
+                pc[-1] += 1
                 if (x[i]['vol_number'] > 1):
                     pc[2] += 1
+                    pc[-2] += 1
+                if (x[i]['vol_number'] > 2):
+                    pc[-3] += 1
 
                 if (true_y[i] == 1):
                     y[1] += 1
                 if (true_y[i] == 2):
                     y[2] += 1
-                if (x[i]['vol_number'] >= 3):
-                    pc[-1] += 1
-                    if (x[i]['vol_number'] == true_y[i]):
-                        y[-1] += 1
-                    if (x[i]['vol_number'] - 1 == true_y[i]):
-                        y[-2] += 1
-                    if (x[i]['vol_number'] - 2 == true_y[i]):
-                        y[-3] += 1
+                if (x[i]['vol_number'] == true_y[i]):
+                    y[-1] += 1
+                if (x[i]['vol_number'] - 1 == true_y[i]):
+                    y[-2] += 1
+                if (x[i]['vol_number'] - 2 == true_y[i]):
+                    y[-3] += 1
 
             i += 1
         i = 0
@@ -98,12 +100,11 @@ if __name__ == '__main__':
     count = 0
     l = []
     wantTails = {1:[], 2:[], -1:[], -2:[], -3:[]}
+    unWantTails = list(TAILS)
     for tail in TAILS:
         ifPass = False
         y = predict_y[tail]
         pc = predict_count[tail]
-        pc[-2] = pc[-1]
-        pc[-3] = pc[-1]
         print("后缀：", tail)
         biggest = 0
         way = 0
@@ -121,9 +122,11 @@ if __name__ == '__main__':
         if(ifPass):
             count += 1
             wantTails[way].append(tail)
+            del unWantTails[unWantTails.index(tail)]
 
     print("总共", len(TAILS), "个后缀测试", ", 可以采用的后缀有：", count, " 个")
     print(np.mean(l))
+    print(unWantTails)
     for key in wantTails:
         print(key, " Tails: ", wantTails[key])
     '''
