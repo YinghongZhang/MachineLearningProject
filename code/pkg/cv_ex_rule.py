@@ -120,6 +120,18 @@ def predict(x, data, true_y):
     i = 0
     index = 0                        # 词汇的下标++++++++++++++++++++
     for w in data:
+        # 单音节词
+        if (x[i]['vol_number'] == 1):
+            predict_y.append(1)
+            predict_way.append(0)
+            words.append(w)
+            extract_y.append(true_y[i])
+            if (true_y[i] != 1):
+                print("error")
+            word_index.append(index)
+            i += 1
+            continue
+            
         #末音节位置，没有符合后缀的单词
         if (ultima(w) == True):
             if (x[i]['vol_number'] >= 3):
